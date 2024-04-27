@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config() ;
 const app = express() ; 
 const port = process.env.PORT || 5000 ;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 //middleware 
 app.use(cors()) ;
@@ -43,6 +43,13 @@ async function run() {
       const result = await cursor.toArray() ;
       res.send(result) ;
      })
+
+     app.get('/spots/email/:email', async(req,res)=> {
+      const email = req.params.email ;
+      const result = await spotCollection.find({email: email}).toArray() ;
+      res.send(result) ;
+     })
+
 
 
     
