@@ -26,6 +26,7 @@ async function run() {
     await client.connect();
 
     const spotCollection = client.db("spotDB").collection("spots");
+    const countryCollection = client.db("spotDB").collection("countries") ;
 
     app.post("/spots", async (req, res) => {
       const spotAdded = req.body;
@@ -46,11 +47,27 @@ async function run() {
       res.send(result)
   })
 
-    app.get("/spots/email/:email", async (req, res) => {
+    app.get("/email/:email", async (req, res) => {
       const email = req.params.email;
       const result = await spotCollection.find({ email: email }).toArray();
       res.send(result);
     });
+
+    app.get("/country/:country", async (req, res) => {
+      const country = req.params.country;
+      const result = await spotCollection.find({ country: country }).toArray();
+      res.send(result);
+    });
+
+    app.get('/countries', async (req, res) => {
+      const cursor = countryCollection.find() ;
+      const result = await cursor.toArray() ;
+      res.send(result) ;
+    })
+
+
+
+
     // spotName, country, location, cost, season, time, visitors, description, name, email, photo
 
     app.put('/spots/:id', async(req,res)=> {
